@@ -1,0 +1,134 @@
+@host = http://localhost:4000
+@json = application/json
+
+
+### Health
+# @name health
+GET {{host}}/api/health
+
+
+### Генерация имени пользователя для изоляции прогонов
+@username = user123
+@email = {{username}}@example.com
+@password = Password123!
+
+
+### Регистрация
+# @name register
+POST {{host}}/api/auth/register
+Content-Type: {{json}}
+
+
+{
+"email": "{{email}}",
+"username": "{{username}}",
+"password": "{{password}}"
+}
+
+### Текущий пользователь (после регистрации по access)
+# @name me_after_register
+GET {{host}}/api/auth/me
+Authorization: Bearer {{register.response.body.accessToken}}
+
+
+### Логин (можно логиниться по username или email)
+# @name login
+POST {{host}}/api/auth/login
+Content-Type: {{json}}
+
+
+{
+"login": "{{username}}",
+"password": "{{password}}"
+}
+
+
+### Обновление access по refresh (ротация) — кука отправится автоматически
+# @name refresh
+POST {{host}}/api/auth/refresh
+
+
+### Текущий пользователь по новому access
+# @name me_after_refresh
+GET {{host}}/api/auth/me
+Authorization: Bearer {{refresh.response.body.accessToken}}
+
+
+### Обновление профиля
+# @name update_me
+PATCH {{host}}/api/users/me
+Content-Type: {{json}}
+Authorization: Bearer {{refresh.response.body.accessToken}}
+
+
+{
+"displayName": "{{username}}",
+"bio": "hello from REST Client",
+"avatarUrl": "https://picsum.photos/seed/{{username}}/200/200"
+}
+
+
+### Создать пост
+# @name create_post
+POST {{host}}/api/posts
+Content-Type: {{json}}
+Authorization: Bearer {{login.response.body.accessToken}}
+
+
+{
+"title": "Первый пост {{username}}",
+"description": "Тестовый пост создан в {{health.response.headers.date}}",
+"imageUrl": "https://picsum.photos/seed/{{username}}-post/600/300"
+}
+
+
+### Публичная лента постов (без авторизации)
+# @name feed_public
+GET {{host}}/api/posts
+
+
+### Публичная лента постов (с авторизацией, появится likedByMe для лайкнутых)
+# @name feed_auth
+GET {{host}}/api/posts
+Authorization: Bearer {{login.response.body.accessToken}}
+
+
+### Лайк поста
+# @name like_post
+POST {{host}}/api/posts/{{create_post.response.body.post.id}}/likes
+Authorization: Bearer {{login.response.body.accessToken}}
+
+
+### Анлайк поста
+# @name unlike_post
+DELETE {{host}}/api/posts/{{create_post.response.body.post.id}}/likes
+Authorization: Bearer {{login.response.body.accessToken}}
+
+
+### Logout (revoke refresh)
+# @name logout
+POST {{host}}/api/auth/logout
+
+
+### Негативные кейсы — неверный пароль
+# @name login_bad_password
+POST {{host}}/api/auth/login
+Content-Type: {{json}}
+
+
+{
+"login": "{{username}}",
+"password": "WrongPassword!!!"
+}
+
+
+
+### Негативные кейсы — доступ без токена
+# @name me_no_token
+GET {{host}}/api/auth/me
+
+
+### Негативные кейсы — доступ с невалидным токеном
+# @name me_bad_token
+GET {{host}}/api/auth/me
+Authorization: Bearer bad.token.here
