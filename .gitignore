@@ -6,3 +6,5 @@ backend/.env
 .prisma
 .vscode/
 .idea/
+
+.env
