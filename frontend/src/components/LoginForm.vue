@@ -49,11 +49,4 @@ const {
   opacity: 0.8;
 }
 
-.server-error {
-  min-height: 1.2em;
-  margin-left: 6px;
-  font-size: 0.9em;
-  color: red;
-}
-
 </style>
