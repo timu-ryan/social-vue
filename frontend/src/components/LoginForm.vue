@@ -5,68 +5,21 @@
     <label for="password">Пароль:</label>
     <InputText name="password" type="password" />
 
-    <!--  глобальная ошибка формы  -->
-    <span
-        class="server-error"
-    >
-      {{ serverErrorMessage || '\u00A0' }}
-    </span>
-
-    <button class="submit-button" :disabled="buttonDisabled">
-      {{ buttonDisabled ? 'Вход…' : 'Войти' }}
+    <button class="submit-button" :disabled="isPending">
+      {{ isPending ? 'Вход…' : 'Войти' }}
     </button>
   </form>
 </template>
 
 <script setup lang="ts">
-import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import { useMutation } from '@tanstack/vue-query'
-import { useRouter } from 'vue-router'
-
-import { loginUser } from '@/api/auth'
-import { useAuthStore } from '@/stores/auth'
-import { queryClient } from '@/lib/query'
-
-import { loginFormSchema, type LoginForm } from "@/schemas/loginFormSchema.ts";
-
 import InputText from '@/components/InputText.vue'
-import {computed, ref} from "vue";
+import {useLoginForm} from "@/composables/useLoginForm.ts";
 
+const {
+  onSubmit,
+  isPending,
+} = useLoginForm()
 
-const router = useRouter()
-const auth = useAuthStore()
-
-type LoginFormWithFormError = LoginForm & { _form?: string }
-
-const serverErrorMessage = ref('')
-
-const { handleSubmit, isSubmitting } = useForm<LoginFormWithFormError>({
-  validationSchema: toTypedSchema(loginFormSchema),
-});
-
-const mutation = useMutation({
-  mutationFn: loginUser,
-  onSuccess: (data) => {
-    auth.accessToken = data.accessToken
-    // сразу в кэш, чтобы не ждать отдельный /api/me
-    queryClient.setQueryData(['user'], data.user)
-  },
-})
-
-const onSubmit = handleSubmit(async (values) => {
-  try {
-    await mutation.mutateAsync(values)
-    await router.push('/')
-  } catch (err: any) {
-    const msg = err?.response?.data?.message || 'Ошибка входа'
-    serverErrorMessage.value = msg
-  }
-});
-
-const buttonDisabled = computed(
-    () => mutation.isPending.value || isSubmitting.value
-)
 </script>
 
 <style scoped>

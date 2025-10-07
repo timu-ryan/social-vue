@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
+import {VueQueryDevtools} from "@tanstack/vue-query-devtools";
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import Footer from "@/components/Footer.vue";
     <RouterView />
   </main>
   <Footer />
+  <VueQueryDevtools />
 </template>
 
 <style>
