@@ -9,25 +9,67 @@
     <label for="passwordConfirm">Подтвердите пароль:</label>
     <InputText name="passwordConfirm" type="password" />
 
-    <button class="submit-button">Зарегистрироваться</button>
+    <!--  глобальная ошибка формы  -->
+    <span
+        class="server-error"
+    >
+      {{ serverErrorMessage || '\u00A0' }}
+    </span>
+
+    <button class="submit-button" :disabled="buttonDisabled">
+      {{ buttonDisabled ? 'Регистрация…' : 'Зарегистрироваться' }}
+    </button>
   </form>
 </template>
 
 <script setup lang="ts">
-import { useForm } from 'vee-validate'
+import {useForm} from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
-import { registerFormSchema } from "@/schemas/registerFormSchema.ts";
+import { useMutation } from '@tanstack/vue-query'
+import { useRouter } from 'vue-router'
+
+import { registerFormSchema, type RegisterForm } from "@/schemas/registerFormSchema.ts";
+import { registerUser } from '@/api/auth'
+import { useAuthStore } from '@/stores/auth'
+import { queryClient } from '@/lib/query'
 
 import InputText from '@/components/InputText.vue'
+import {computed, ref} from "vue";
+import type {AuthResponse, RegisterRequest} from "@/types/auth.ts";
 
-const { handleSubmit } = useForm({
+const router = useRouter()
+const auth = useAuthStore()
+
+type RegisterFormWithFormError = RegisterForm & { _form?: string }
+
+const serverErrorMessage = ref('')
+
+const { handleSubmit, isSubmitting } = useForm<RegisterFormWithFormError>({
   validationSchema: toTypedSchema(registerFormSchema),
 });
 
-const onSubmit = handleSubmit(values => {
-  console.log(values)
-});
+const mutation = useMutation<AuthResponse, unknown, RegisterRequest>({
+  mutationFn: registerUser, // (payload) => Promise<AuthResponse>
+  onSuccess: (data) => {
+    auth.accessToken = data.accessToken
+    queryClient.setQueryData(['user'], data.user)
+  },
+})
 
+const onSubmit = handleSubmit(async (values) => {
+  try {
+    const { email, username, password } = values
+    await mutation.mutateAsync({ email, username, password })
+    await router.push('/')
+  } catch (err: any) {
+    const msg = err?.response?.data?.message || 'Ошибка регистрации'
+    serverErrorMessage.value = msg
+  }
+})
+
+const buttonDisabled = computed(
+    () => mutation.isPending.value || isSubmitting.value
+)
 </script>
 
 <style scoped>
@@ -55,6 +97,13 @@ const onSubmit = handleSubmit(values => {
 .submit-button:hover {
   cursor: pointer;
   opacity: 0.8;
+}
+
+.server-error {
+  min-height: 1.2em;
+  margin-left: 6px;
+  font-size: 0.9em;
+  color: red;
 }
 
 </style>
