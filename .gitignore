@@ -8,3 +8,5 @@ backend/.env
 .idea/
 
 .env
+
+my-branches.txt

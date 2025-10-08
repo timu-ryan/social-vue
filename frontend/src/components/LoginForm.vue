@@ -5,24 +5,20 @@
     <label for="password">Пароль:</label>
     <InputText name="password" type="password" />
 
-    <button class="submit-button">Войти</button>
+    <button class="submit-button" :disabled="isPending">
+      {{ isPending ? 'Вход…' : 'Войти' }}
+    </button>
   </form>
 </template>
 
 <script setup lang="ts">
-import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import { loginFormSchema } from "@/schemas/loginFormSchema.ts";
-
 import InputText from '@/components/InputText.vue'
+import {useLoginForm} from "@/composables/useLoginForm.ts";
 
-const { handleSubmit } = useForm({
-  validationSchema: toTypedSchema(loginFormSchema),
-});
-
-const onSubmit = handleSubmit(values => {
-  console.log(values)
-});
+const {
+  onSubmit,
+  isPending,
+} = useLoginForm()
 
 </script>
 

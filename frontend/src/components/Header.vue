@@ -4,15 +4,44 @@
       <div class="header__logo">
         <RouterLink to="/" class="header__link">Social vue</RouterLink>
       </div>
+
       <nav class="header__nav">
-        <RouterLink to="/login" class="header__link">Login</RouterLink>
-        <RouterLink to="/register" class="header__link">Register</RouterLink>
+        <!-- пока узнаём пользователя -->
+        <span v-if="isLoading" class="header__link">…</span>
+
+        <!-- залогинен -->
+        <template v-else-if="user?.username">
+          <span class="">Привет, {{ user?.username }}</span>
+          <button
+              type="button"
+              class="header__button"
+              :disabled="logoutPending"
+              @click="() => logout()"
+          >
+            {{ logoutPending ? 'Выходим…' : 'Выйти' }}
+          </button>
+        </template>
+
+        <!-- гость -->
+        <template v-else>
+          <RouterLink to="/login" class="header__link">Login</RouterLink>
+          <RouterLink to="/register" class="header__link">Register</RouterLink>
+        </template>
+
       </nav>
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
+
+import { useMe } from "@/composables/useMe.ts";
+
+import {useLogout} from "@/composables/useLogout.ts";
+
+const {user, isLoading} = useMe();
+
+const {logout, isPending: logoutPending} = useLogout()
 
 </script>
 
@@ -47,8 +76,20 @@
     text-decoration: underline;
   }
 
+  .header__button {
+    padding: 6px;
+    min-width: 140px;
+    background-color: transparent;
+    border: 1px solid black;
+  }
+  .header__button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+
   .header__nav {
     display: flex;
+    align-items: center;
     gap: 16px;
   }
 </style>

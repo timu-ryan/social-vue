@@ -8,7 +8,7 @@ GET {{host}}/api/health
 
 
 ### Генерация имени пользователя для изоляции прогонов
-@username = user123s
+@username = user123ss
 @email = {{username}}@example.com
 @password = Password123!
 

@@ -9,24 +9,20 @@
     <label for="passwordConfirm">Подтвердите пароль:</label>
     <InputText name="passwordConfirm" type="password" />
 
-    <button class="submit-button">Зарегистрироваться</button>
+    <button class="submit-button" :disabled="isPending">
+      {{ isPending ? 'Регистрация…' : 'Зарегистрироваться' }}
+    </button>
   </form>
 </template>
 
 <script setup lang="ts">
-import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import { registerFormSchema } from "@/schemas/registerFormSchema.ts";
-
 import InputText from '@/components/InputText.vue'
+import {useRegisterForm} from "@/composables/useRegisterForm.ts";
 
-const { handleSubmit } = useForm({
-  validationSchema: toTypedSchema(registerFormSchema),
-});
-
-const onSubmit = handleSubmit(values => {
-  console.log(values)
-});
+const {
+  onSubmit,
+  isPending,
+} = useRegisterForm();
 
 </script>
 
