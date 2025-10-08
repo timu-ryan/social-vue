@@ -1,16 +1,17 @@
 <template>
   <header class="header">
     <div class="header__content">
-      <div class="header__logo">
-        <RouterLink to="/" class="header__link">Social vue</RouterLink>
-      </div>
-
       <nav class="header__nav">
+        <RouterLink to="/" class="header__link">Social vue</RouterLink>
+        <RouterLink to="/users" class="header__link">Users</RouterLink>
+      </nav>
+
+      <nav class="header__buttons">
         <!-- пока узнаём пользователя -->
         <span v-if="isLoading" class="header__link">…</span>
 
         <!-- залогинен -->
-        <template v-else-if="user?.username">
+        <template v-else-if="isAuthed">
           <span class="">Привет, {{ user?.username }}</span>
           <button
               type="button"
@@ -38,8 +39,11 @@
 import { useMe } from "@/composables/useMe.ts";
 
 import {useLogout} from "@/composables/useLogout.ts";
+import {computed} from "vue";
 
 const {user, isLoading} = useMe();
+
+const isAuthed = computed(() => !!user.value?.username)
 
 const {logout, isPending: logoutPending} = useLogout()
 
@@ -85,6 +89,12 @@ const {logout, isPending: logoutPending} = useLogout()
   .header__button:hover {
     cursor: pointer;
     opacity: 0.8;
+  }
+
+  .header__buttons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
 
   .header__nav {

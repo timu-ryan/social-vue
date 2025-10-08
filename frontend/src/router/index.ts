@@ -3,6 +3,7 @@ import Main from "@/pages/Main.vue";
 import Login from "@/pages/Login.vue";
 import NotFound from "@/pages/NotFound.vue";
 import Register from "@/pages/Register.vue";
+import Users from "@/pages/Users.vue";
 
 const routes = [
   {
@@ -16,6 +17,10 @@ const routes = [
   {
     path: '/register',
     component: Register,
+  },
+  {
+    path: '/users',
+    component: Users,
   },
   {
     path: '/:pathMatch(.*)*',
