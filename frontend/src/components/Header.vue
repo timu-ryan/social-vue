@@ -2,8 +2,8 @@
   <header class="header">
     <div class="header__content">
       <nav class="header__nav">
-        <RouterLink to="/" class="header__link">Social vue</RouterLink>
-        <RouterLink to="/users" class="header__link">Users</RouterLink>
+        <RouterLink to="/" class="header__link" activeClass="header__link_active">Social vue</RouterLink>
+        <RouterLink to="/users" class="header__link" activeClass="header__link_active">Users</RouterLink>
       </nav>
 
       <nav class="header__buttons">
@@ -25,8 +25,8 @@
 
         <!-- гость -->
         <template v-else>
-          <RouterLink to="/login" class="header__link">Login</RouterLink>
-          <RouterLink to="/register" class="header__link">Register</RouterLink>
+          <RouterLink to="/login" class="header__link" activeClass="header__link_active">Login</RouterLink>
+          <RouterLink to="/register" class="header__link" activeClass="header__link_active">Register</RouterLink>
         </template>
 
       </nav>
@@ -77,6 +77,11 @@ const {logout, isPending: logoutPending} = useLogout()
   }
 
   .header__link:hover {
+    text-decoration: underline;
+  }
+
+  /* в глобальные мб перенести */
+  .header__link_active {
     text-decoration: underline;
   }
 

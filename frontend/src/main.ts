@@ -17,7 +17,6 @@ const app = createApp(App)
 const pinia = createPinia()
 app.use(pinia)
 app.use(VueQueryPlugin, { queryClient })
-app.use(router)
 
 const authStore = useAuthStore(pinia)
 
@@ -31,7 +30,9 @@ setAuthHandlers({
 try {
   await authStore.refresh()
 } catch (e) {
-  console.error(e)
+  // console.log('гость') // гость
 }
 
+app.use(router)
+await router.isReady()
 app.mount('#app')
