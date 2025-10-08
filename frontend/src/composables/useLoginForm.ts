@@ -5,6 +5,7 @@ import {useLoginMutation} from "@/composables/useLoginMutation.ts";
 import type {LoginRequest} from "@/types/auth.ts";
 import router from "@/router";
 import type {AxiosError} from "axios";
+import {queryClient} from "@/lib/query.ts";
 
 export function useLoginForm() {
   const { handleSubmit, setFieldError } = useForm({
@@ -18,7 +19,10 @@ export function useLoginForm() {
 
   const onSubmit = handleSubmit(async (values: LoginRequest) => {
     login(values, {
-      onSuccess: () => {
+      onSuccess: (user) => {
+        // или можно явно
+        queryClient.refetchQueries({ queryKey: ['user'], type: 'active', exact: true })
+        // await queryClient.invalidateQueries({ queryKey: ['user'], exact: true})
         router.push("/");
       },
       onError: (e) => {
@@ -26,7 +30,7 @@ export function useLoginForm() {
         if (err.response?.status === 401) {
           setFieldError("password", "Неверный логин или пароль")
         } else {
-          setFieldError("password", err.response?.data?.message ?? "Что-то прошло не так")
+          setFieldError("password", err.message ?? "Что-то прошло не так")
         }
       }
     })

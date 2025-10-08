@@ -5,6 +5,7 @@ import {useRegisterMutation} from "@/composables/useRegisterMutation.ts";
 import type {RegisterRequest} from "@/types/auth.ts";
 import router from "@/router";
 import type {AxiosError} from "axios";
+import {queryClient} from "@/lib/query.ts";
 
 export function useRegisterForm() {
   const { handleSubmit, setFieldError } = useForm({
@@ -18,12 +19,17 @@ export function useRegisterForm() {
 
   const onSubmit = handleSubmit(async (values: RegisterRequest) => {
     register(values, {
-      onSuccess: () => {
+      onSuccess: (user) => {
+        queryClient.refetchQueries({ queryKey: ['user'], type: 'active', exact: true })
         router.push("/");
       },
       onError: (e) => {
         const err = e as AxiosError<{ message?: string; errors?: Record<string, string[]> }>
-        setFieldError("passwordConfirm", err.response?.data?.message ?? "Что-то прошло не так")
+        if (err.response?.status === 409) {
+          setFieldError("username", "Username или Email уже заняты")
+        } else {
+          setFieldError("passwordConfirm", err.message ?? "Что-то прошло не так")
+        }
       }
     })
   })

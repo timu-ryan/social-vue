@@ -5,10 +5,6 @@ import type {
   LoginRequest,
 } from '@/types/auth'
 
-import type {
-  AuthUser,
-} from '@/types/user'
-
 import { queryClient } from '@/lib/query'
 
 export const useAuthStore = defineStore('auth', {
@@ -22,14 +18,13 @@ export const useAuthStore = defineStore('auth', {
     async register(payload: RegisterRequest) {
       const data = await registerUser(payload)
       this.accessToken = data.accessToken
-      // прогреем кэш пользователя, чтобы UI сразу знал, кто вошёл
-      queryClient.setQueryData(['user'], data.user as AuthUser)
+      return data.user
     },
 
     async login(payload: LoginRequest) {
       const data = await loginUser(payload)
       this.accessToken = data.accessToken
-      queryClient.setQueryData(['user'], data.user as AuthUser)
+      return data.user
     },
 
     async refresh() {

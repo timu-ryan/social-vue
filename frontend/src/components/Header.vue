@@ -7,18 +7,18 @@
 
       <nav class="header__nav">
         <!-- пока узнаём пользователя -->
-        <span v-if="isFetching" class="header__link">…</span>
+        <span v-if="isLoading" class="header__link">…</span>
 
         <!-- залогинен -->
-        <template v-else-if="isLoggedIn">
-          <span class="header__link">Привет, {{ user?.username }}</span>
+        <template v-else-if="user?.username">
+          <span class="">Привет, {{ user?.username }}</span>
           <button
               type="button"
-              class="header__link"
-              :disabled="logoutDisabled"
-              @click="onLogout"
+              class="header__button"
+              :disabled="logoutPending"
+              @click="() => logout()"
           >
-            {{ logoutDisabled ? 'Выходим…' : 'Выйти' }}
+            {{ logoutPending ? 'Выходим…' : 'Выйти' }}
           </button>
         </template>
 
@@ -27,40 +27,22 @@
           <RouterLink to="/login" class="header__link">Login</RouterLink>
           <RouterLink to="/register" class="header__link">Register</RouterLink>
         </template>
+
       </nav>
     </div>
   </header>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useMutation } from '@tanstack/vue-query'
 
-import { useAuthStore } from '@/stores/auth'
-import { useUserQuery } from '@/composables/useUser' // из ответа выше
+import { useMe } from "@/composables/useMe.ts";
 
-const router = useRouter()
-const auth = useAuthStore()
+import {useLogout} from "@/composables/useLogout.ts";
 
-// читаем пользователя из TanStack-кэша/запроса
-const { data: user, isFetching } = useUserQuery()
+const {user, isLoading} = useMe();
 
-// считаем признак входа (если есть токен ИЛИ есть user в кэше)
-const isLoggedIn = computed(() => !!auth.accessToken || !!user.value)
+const {logout, isPending: logoutPending} = useLogout()
 
-// mutation для выхода
-const logoutMutation = useMutation({
-  mutationFn: () => auth.logout(), // важно: () => auth.logout(), а не прямую ссылку
-  onSuccess: () => {
-    router.push('/login')
-  },
-})
-
-const onLogout = () => logoutMutation.mutate()
-
-// чтобы не ловить типовые проблемы с Booleanish, даём явный computed
-const logoutDisabled = computed(() => logoutMutation.isPending.value)
 </script>
 
 <style scoped>
@@ -94,8 +76,20 @@ const logoutDisabled = computed(() => logoutMutation.isPending.value)
     text-decoration: underline;
   }
 
+  .header__button {
+    padding: 6px;
+    min-width: 140px;
+    background-color: transparent;
+    border: 1px solid black;
+  }
+  .header__button:hover {
+    cursor: pointer;
+    opacity: 0.8;
+  }
+
   .header__nav {
     display: flex;
+    align-items: center;
     gap: 16px;
   }
 </style>

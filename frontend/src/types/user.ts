@@ -2,5 +2,9 @@
 export type AuthUser = {
   id: string;
   email: string;
-  username: string
+  username: string;
+  displayName?: string;
+  bio?: string;
+  avatarUrl?: string;
+  createdAt?: string;
 }

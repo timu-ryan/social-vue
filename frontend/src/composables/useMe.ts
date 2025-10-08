@@ -1,15 +1,26 @@
 import { useQuery } from '@tanstack/vue-query'
-import { computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import {computed} from "vue";
 import { fetchMe } from '@/api/user'
 
-export function useUserQuery() {
+export function useMe() {
   const auth = useAuthStore()
 
-  return useQuery({
+  const {
+    data,
+    error,
+    isLoading,
+  } = useQuery({
     queryKey: ['user'],
     queryFn: fetchMe,
     enabled: computed(() => !!auth.accessToken),
-    staleTime: 5 * 60 * 1000,
+    staleTime: 60_000,
   })
+
+  const user = computed(() => data.value)
+  return {
+    user,
+    isLoading,
+    error,
+  }
 }

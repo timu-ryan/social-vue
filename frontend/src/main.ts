@@ -6,10 +6,32 @@ import { queryClient } from '@/lib/query'
 import App from './App.vue'
 import router from './router'
 
+import { useAuthStore } from "@/stores/auth.ts";
+import { setTokenGetter } from '@/api/token-getter'
+import { setAuthHandlers } from '@/api/auth-bridge'
+import '@/lib/axios'                // регистрируем request-интерцептор
+import '@/lib/axios-auth'           // регистрируем авто-refresh
+
 const app = createApp(App)
 
-app.use(createPinia())
+const pinia = createPinia()
+app.use(pinia)
 app.use(VueQueryPlugin, { queryClient })
 app.use(router)
+
+const authStore = useAuthStore(pinia)
+
+setTokenGetter(() => authStore.accessToken)
+setAuthHandlers({
+  refresh: () => authStore.refresh(),
+  logout: () => authStore.logout(),
+})
+
+
+try {
+  await authStore.refresh()
+} catch (e) {
+  console.error(e)
+}
 
 app.mount('#app')

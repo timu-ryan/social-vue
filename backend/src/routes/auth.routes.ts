@@ -7,6 +7,7 @@ import { validate } from "../middleware/validate";
 import type { Request, Response } from "express";
 import rateLimit from "express-rate-limit";
 import { env } from "../env";
+import { Prisma } from "@prisma/client";
 
 const router = Router();
 
@@ -34,7 +35,18 @@ router.post("/register", authLimiter, validate(registerSchema), async (req: Requ
 
 
   const passwordHash = await hashPassword(password);
-  const user = await prisma.user.create({ data: { email, username, passwordHash } });
+  let user;
+  try {
+    user = await prisma.user.create({ data: { email, username, passwordHash } });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+      const metaTarget = error.meta?.target as string[] | string | undefined;
+      const firstTarget = Array.isArray(metaTarget) ? metaTarget[0] : metaTarget;
+      const conflictField = firstTarget === "email" ? "email" : firstTarget === "username" ? "username" : "account";
+      return res.status(409).json({ error: `${conflictField} already in use` });
+    }
+    throw error;
+  }
 
 
   const jti = newJti();
