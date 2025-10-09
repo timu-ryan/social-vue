@@ -10,8 +10,23 @@
       </li>
     </ul>
 
-    <button v-if="hasNextPage" @click="() => fetchNextPage()">load more</button>
-    <p v-else>а больше нет</p>
+    <!-- Сентинел для IntersectionObserver -->
+    <div
+      v-if="hasNextPage"
+      aria-hidden="true"
+      ref="loadMoreRef"
+      style="height: 1px; width: 100%;"
+    ></div>
+
+    <button
+      v-if="hasNextPage"
+      @click="() => fetchNextPage()"
+      :disabled="isFetchingNextPage"
+      class="load-more-button"
+    >
+      {{ isFetchingNextPage ? 'загружаю…' : 'загрузить еще' }}
+    </button>
+    <p v-else class="no-more-users">Пользователей больше нет...</p>
   </div>
 </template>
 
@@ -23,6 +38,7 @@ import UserCard from "@/components/UserCard.vue";
 import ListTypePicker from "@/components/ListTypePicker.vue";
 import DetailedUserCard from "@/components/DetailedUserCard.vue";
 import router from "@/router";
+import {useInfiniteObserver} from "@/composables/useInfiniteObserver.ts";
 
 
 const {
@@ -36,6 +52,15 @@ const {
 
 type TListType = 'detailed' | 'common'
 const pickedListType = ref<TListType>('detailed')
+
+const { loadMoreRef, isIOSupported } = useInfiniteObserver({
+  hasNextPage,
+  isLoading: isFetchingNextPage,
+  onLoadMore: fetchNextPage,
+  root: null,                 // по умолчанию — вьюпорт
+  rootMargin: "400px 0px",    // прелоад за 400px до низа
+  threshold: 0.01,
+})
 
 watchEffect(() => {
 
@@ -72,5 +97,24 @@ watchEffect(() => {
     max-width: 600px;
     grid-template-columns: repeat(1, 1fr);
   }
+}
+
+.load-more-button {
+  margin: 20px auto;
+  display: block;
+  padding: 8px 20px;
+  border: 1px solid gray;
+  border-radius: 5px;
+  background: transparent;
+}
+
+.load-more-button:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.no-more-users {
+  text-align: center;
+  margin: 20px auto;
 }
 </style>
