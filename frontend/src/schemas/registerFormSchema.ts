@@ -3,7 +3,7 @@ import * as z from "zod";
 export const registerFormSchema = z
   .object({
     email: z
-      .email("Введите корректный адрес электронной почты"),
+      .email("Введите корректный адрес электронной почты (example@mail.com)"),
 
     username: z
       .string("Обязательное поле")

@@ -1,12 +1,12 @@
 <template>
   <form @submit.prevent="onSubmit" class="form">
-    <label for="email">Email:</label>
+    <label for="email" class="form__label">Email</label>
     <InputText name="email" autoFocus placeholder="example@mail.com" />
-    <label for="username">Имя пользователя:</label>
-    <InputText name="username" placeholder="unique_name_123"/>
-    <label for="password">Пароль:</label>
+    <label for="username" class="form__label">Имя пользователя</label>
+    <InputText name="username" placeholder="unique_name_123" />
+    <label for="password" class="form__label">Пароль</label>
     <InputText name="password" type="password" />
-    <label for="passwordConfirm">Подтвердите пароль:</label>
+    <label for="passwordConfirm" class="form__label">Подтвердите пароль</label>
     <InputText name="passwordConfirm" type="password" />
 
     <button class="submit-button" :disabled="isPending">
@@ -27,30 +27,62 @@ const {
 </script>
 
 <style scoped>
-
 .form {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  gap: 6px;
+  gap: 16px;
+}
+
+.form__label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #555;
+}
+
+.form :deep(.input-field) {
+  height: 48px;
+  padding: 0 14px;
+  border: 1px solid black;
+  border-radius: 4px;
+  background: #f8f8f8;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form :deep(.input-field:focus) {
+  outline: none;
+  border-color: #222;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+  background: white;
+}
+
+.form :deep(.input-error) {
+  font-size: 12px;
+  color: #d02525;
 }
 
 .submit-button {
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 300px;
-  height: 50px;
-  margin: 0 auto;
+  height: 52px;
+  margin-top: 12px;
   background: transparent;
   border: 1px solid black;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: opacity 0.2s ease;
 }
+
 .submit-button:hover {
   cursor: pointer;
   opacity: 0.8;
 }
 
+.submit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 </style>

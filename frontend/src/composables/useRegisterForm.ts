@@ -24,6 +24,7 @@ export function useRegisterForm() {
         router.push("/");
       },
       onError: (e) => {
+        // TODO: вынести сообщения ошибок в константыт
         const err = e as AxiosError<{ message?: string; errors?: Record<string, string[]> }>
         if (err.response?.status === 409) {
           setFieldError("username", "Username или Email уже заняты")
