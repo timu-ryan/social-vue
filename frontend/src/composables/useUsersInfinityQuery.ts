@@ -12,7 +12,7 @@ type Opts = {
 
 type PageParam = { offset?: number; limit?: number };
 
-export function useUsersInfiniteQuery(opts: Opts = {}) {
+export function useUsersInfinityQuery(opts: Opts = {}) {
   const firstLimit = opts.firstLimit ?? 10;   // по умолчанию 10
   const pageLimit  = opts.pageLimit ?? 5;     // пагинация +5
   const initialOffset = opts.initialOffset ?? 0;
