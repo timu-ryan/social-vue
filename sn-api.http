@@ -74,6 +74,12 @@ GET {{host}}/api/users?limit=5&offset=0
 Authorization: Bearer {{refresh.response.body.accessToken}}
 
 
+### Профиль пользователя (username)
+# @name user_profile
+GET {{host}}/api/users/{{username}}
+Authorization: Bearer {{refresh.response.body.accessToken}}
+
+
 ### Создать пост
 # @name create_post
 POST {{host}}/api/posts

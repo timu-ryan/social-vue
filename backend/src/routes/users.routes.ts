@@ -23,6 +23,16 @@ const listUsersSchema = z.object({
   }),
 });
 
+const profileSchema = z.object({
+  params: z.object({
+    username: z
+      .string()
+      .min(3)
+      .max(32)
+      .regex(/^[a-zA-Z0-9_]+$/),
+  }),
+});
+
 
 router.patch("/me", requireAuth, validate(updateMeSchema), async (req, res) => {
   const userId = req.user!.id;
@@ -58,6 +68,22 @@ router.get("/", requireAuth, validate(listUsersSchema), async (req, res) => {
       hasMore,
     },
   });
+});
+
+
+router.get("/:username", requireAuth, validate(profileSchema), async (req, res) => {
+  const { username } = req.params as { username: string };
+
+  const user = await prisma.user.findUnique({
+    where: { username },
+    select: { id: true, email: true, username: true, displayName: true, bio: true, avatarUrl: true, createdAt: true },
+  });
+
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+
+  res.json({ user });
 });
 
 
