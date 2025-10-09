@@ -124,13 +124,13 @@ const openUserProfile = (username: string | null) => {
   flex-direction: column;
   align-items: center;
   gap: 24px;
+  color: var(--color-text-primary);
 }
 
 .users-page__container {
   width: 100%;
   max-width: 1200px;
-  padding: 28px 32px;
-  background: white;
+  padding: 32px 36px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -157,12 +157,12 @@ const openUserProfile = (username: string | null) => {
 
 .users-page__subtitle {
   font-size: 15px;
-  color: #555;
+  color: var(--color-text-muted);
 }
 
 .users-page__view-switcher {
   padding: 10px 14px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -172,11 +172,12 @@ const openUserProfile = (username: string | null) => {
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
 }
 
 .users-page__view-switcher :deep(input) {
   margin-left: 4px;
-  accent-color: black;
+  accent-color: var(--color-text-primary);
 }
 
 .users-page__view-switcher :deep(label):hover {
@@ -187,16 +188,12 @@ const openUserProfile = (username: string | null) => {
   cursor: pointer;
 }
 
-.users-page__notice {
-  font-size: 14px;
-  color: #666;
-}
 
 .users-page__state {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  color: #333;
+  color: var(--color-text-primary);
 }
 
 .users-page__state_inline {
@@ -204,11 +201,11 @@ const openUserProfile = (username: string | null) => {
   margin: 0;
   padding: 0;
   font-size: 14px;
-  color: #555;
+  color: var(--color-text-muted);
 }
 
 .users-page__state_error {
-  color: #a80000;
+  color: var(--color-error);
 }
 
 .users-page__state-details {
@@ -221,7 +218,7 @@ const openUserProfile = (username: string | null) => {
 .users-page__retry {
   align-self: flex-start;
   padding: 8px 16px;
-  border: 1px solid black;
+  border: 1px solid var(--color-border);
   background: transparent;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -261,10 +258,11 @@ const openUserProfile = (username: string | null) => {
 
 .users-page__load-more {
   padding: 12px 26px;
-  border: 1px solid black;
+  border: 1px solid var(--color-border);
   background: transparent;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  color: inherit;
 }
 
 .users-page__load-more:hover {
@@ -279,7 +277,7 @@ const openUserProfile = (username: string | null) => {
 
 .users-page__end {
   font-size: 14px;
-  color: #555;
+  color: var(--color-text-muted);
   text-align: center;
 }
 
@@ -296,6 +294,7 @@ const openUserProfile = (username: string | null) => {
 
   .users-page__view-switcher {
     width: 100%;
+    justify-content: space-between;
   }
 }
 

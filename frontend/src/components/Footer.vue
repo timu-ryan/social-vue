@@ -17,7 +17,10 @@
         </RouterLink>
       </nav>
 
-      <p class="footer__meta">© {{ currentYear }} tim.social</p>
+      <p class="footer__meta">
+        © {{ currentYear }}
+        <a href="https://github.com/timu-ryan" target="_blank">GitHub</a>
+      </p>
     </div>
   </footer>
 </template>
@@ -34,8 +37,9 @@ const links = [
 <style scoped>
 .footer {
   width: 100%;
-  border-top: 1px solid black;
-  background: #f6f6f6;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg-muted);
+  color: var(--color-text-secondary);
 }
 
 .footer__content {
@@ -63,7 +67,7 @@ const links = [
 
 .footer__tagline {
   font-size: 14px;
-  color: #555;
+  color: var(--color-text-muted);
 }
 
 .footer__nav {
@@ -75,7 +79,7 @@ const links = [
 
 .footer__link {
   text-decoration: none;
-  color: #333;
+  color: var(--color-text-primary);
   font-size: 15px;
 }
 
@@ -89,7 +93,11 @@ const links = [
 
 .footer__meta {
   font-size: 14px;
-  color: #666;
+  color: var(--color-text-muted);
+}
+
+.footer__meta a {
+  color: var(--color-text-muted);
 }
 
 @media (max-width: 720px) {

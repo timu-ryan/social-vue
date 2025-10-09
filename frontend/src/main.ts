@@ -11,6 +11,8 @@ import { setTokenGetter } from '@/api/token-getter'
 import { setAuthHandlers } from '@/api/auth-bridge'
 import '@/lib/axios'                // регистрируем request-интерцептор
 import '@/lib/axios-auth'           // регистрируем авто-refresh
+import '@/styles/theme.css'
+import { useThemeStore } from '@/stores/theme.ts'
 
 const app = createApp(App)
 
@@ -19,6 +21,9 @@ app.use(pinia)
 app.use(VueQueryPlugin, { queryClient })
 
 const authStore = useAuthStore(pinia)
+const themeStore = useThemeStore(pinia)
+
+themeStore.init()
 
 setTokenGetter(() => authStore.accessToken)
 setAuthHandlers({

@@ -49,13 +49,17 @@ onMounted(() => {
 .input-field {
   height: 36px;
   padding: 0 6px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg-input);
+  color: var(--color-text-primary);
 }
 
 .input-error {
   min-height: 1.2em;
   margin-left: 6px;
   font-size: 0.9em;
-  color: red;
+  color: var(--color-error);
 }
 
 </style>

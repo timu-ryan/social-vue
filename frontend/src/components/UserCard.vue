@@ -38,7 +38,7 @@ defineProps<{
   display: flex;
   gap: 10px;
   padding: 6px 20px 6px 6px;
-  border: 1px solid black;
+  border: 1px solid var(--color-border);
   border-radius: 10px;
   align-items: start;
   transition: transform 0.1s ease-in-out;
@@ -54,8 +54,8 @@ defineProps<{
 }
 
 .card__avatar {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 6px;
 }
 
@@ -64,5 +64,4 @@ defineProps<{
   white-space: nowrap;
   overflow: hidden;
 }
-
 </style>

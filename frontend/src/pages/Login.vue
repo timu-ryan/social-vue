@@ -26,13 +26,14 @@ import LoginForm from '@/components/LoginForm.vue'
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--color-text-primary);
 }
 
 .auth-card {
   width: 100%;
   max-width: 520px;
   padding: 36px 40px;
-  background: white;
+  color: var(--color-text-primary);
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -51,14 +52,14 @@ import LoginForm from '@/components/LoginForm.vue'
 
 .auth-card__hint {
   font-size: 14px;
-  color: #555;
+  color: var(--color-text-muted);
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
 }
 
 .auth-card__link {
-  color: inherit;
+  color: var(--color-link);
   text-decoration: underline;
 }
 

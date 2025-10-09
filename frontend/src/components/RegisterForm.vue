@@ -37,28 +37,28 @@ const {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #555;
+  color: var(--color-text-muted);
 }
 
 .form :deep(.input-field) {
   height: 48px;
   padding: 0 14px;
-  border: 1px solid black;
+  border: 1px solid var(--color-border);
   border-radius: 4px;
-  background: #f8f8f8;
+  background: transparent;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .form :deep(.input-field:focus) {
   outline: none;
-  border-color: #222;
+  border-color: var(--color-border);
   box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
-  background: white;
+  background: transparent;
 }
 
 .form :deep(.input-error) {
   font-size: 12px;
-  color: #d02525;
+  color: var(--color-error);
 }
 
 .submit-button {
@@ -69,8 +69,8 @@ const {
   height: 52px;
   margin-top: 12px;
   background: transparent;
-  border: 1px solid black;
-  border-radius: 4px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   transition: opacity 0.2s ease;

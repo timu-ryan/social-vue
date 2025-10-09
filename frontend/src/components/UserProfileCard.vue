@@ -131,12 +131,12 @@ const onEditClick = () => {
 .profile-card {
   width: 100%;
   max-width: 640px;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--color-border);
   padding: 24px;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  background: white;
+  color: var(--color-text-primary);
 }
 
 .profile-card__header {
@@ -154,7 +154,7 @@ const onEditClick = () => {
 .profile-card__edit-button {
   min-width: 140px;
   padding: 10px 16px;
-  border: 1px solid black;
+  border: 1px solid var(--color-border);
   background: transparent;
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -169,11 +169,11 @@ const onEditClick = () => {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  color: #333;
+  color: var(--color-text-primary);
 }
 
 .profile-card__state_error {
-  color: #a80000;
+  color: var(--color-error);
 }
 
 .profile-card__error-details {
@@ -184,7 +184,7 @@ const onEditClick = () => {
 }
 
 .profile-card__state_guest {
-  color: #333;
+  color: var(--color-text-primary);
 }
 
 .profile-card__hint {
@@ -192,11 +192,11 @@ const onEditClick = () => {
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  color: #555;
+  color: var(--color-text-muted);
 }
 
 .profile-card__link {
-  color: inherit;
+  color: var(--color-link);
   text-decoration: underline;
 }
 
@@ -221,7 +221,7 @@ const onEditClick = () => {
   height: 160px;
   border-radius: 12px;
   object-fit: cover;
-  border: 1px solid black;
+  border: 1px solid var(--color-border);
 }
 
 .profile-card__primary-info {
@@ -237,12 +237,12 @@ const onEditClick = () => {
 
 .profile-card__username {
   font-size: 18px;
-  color: #555;
+  color: var(--color-text-secondary);
 }
 
 .profile-card__bio {
   max-width: 380px;
-  color: #333;
+  color: var(--color-text-primary);
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
@@ -262,18 +262,18 @@ const onEditClick = () => {
   text-transform: uppercase;
   font-size: 12px;
   letter-spacing: 0.06em;
-  color: #888;
+  color: var(--color-text-muted);
 }
 
 .profile-card__details-item dd {
   margin: 0;
   font-size: 16px;
-  color: #222;
+  color: var(--color-text-primary);
 }
 
 .profile-card__details-muted {
   font-size: 14px;
-  color: #666;
+  color: var(--color-text-muted);
   margin-left: 4px;
   white-space: nowrap;
 }

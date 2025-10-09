@@ -11,10 +11,10 @@
         <span v-if="isLoading" class="header__state">…</span>
 
         <template v-else-if="isAuthed">
-            <div class="header__profile-info">
-              <span class="header__profile-name">{{ displayName }}</span>
-              <span class="header__profile-username">@{{ user?.username }}</span>
-            </div>
+          <div class="header__profile-info">
+            <span class="header__profile-name">{{ displayName }}</span>
+            <span class="header__profile-username">@{{ user?.username }}</span>
+          </div>
 
           <button
             type="button"
@@ -30,6 +30,14 @@
           <RouterLink to="/login" class="header__link" activeClass="header__link_active">Войти</RouterLink>
           <RouterLink to="/register" class="header__link" activeClass="header__link_active">Регистрация</RouterLink>
         </template>
+
+        <button
+          type="button"
+          class="header__theme"
+          @click="toggleTheme"
+        >
+          {{ themeToggleLabel }}
+        </button>
       </div>
     </div>
   </header>
@@ -39,6 +47,7 @@
 import { computed } from 'vue'
 import { useMe } from '@/composables/useMe.ts'
 import { useLogout } from '@/composables/useLogout.ts'
+import { useThemeStore } from '@/stores/theme.ts'
 
 const { user, isLoading } = useMe()
 
@@ -46,13 +55,19 @@ const isAuthed = computed(() => !!user.value?.username)
 const displayName = computed(() => user.value?.displayName || 'аноним')
 
 const { logout, isPending: logoutPending } = useLogout()
+
+const themeStore = useThemeStore()
+const themeToggleLabel = computed(() =>
+  themeStore.theme === 'light' ? 'темная тема' : 'светлая тема'
+)
+const toggleTheme = () => themeStore.toggle()
 </script>
 
 <style scoped>
 .header {
   width: 100%;
-  border-bottom: 1px solid black;
-  background: #f6f6f6;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg-muted);
 }
 
 .header__content {
@@ -71,7 +86,7 @@ const { logout, isPending: logoutPending } = useLogout()
   font-weight: 700;
   letter-spacing: 0.06em;
   text-decoration: none;
-  color: inherit;
+  color: var(--color-text-primary);
   text-transform: uppercase;
 }
 
@@ -94,7 +109,7 @@ const { logout, isPending: logoutPending } = useLogout()
 
 .header__link {
   text-decoration: none;
-  color: #222;
+  color: var(--color-text-primary);
   font-size: 16px;
 }
 
@@ -108,7 +123,7 @@ const { logout, isPending: logoutPending } = useLogout()
 
 .header__state {
   font-size: 16px;
-  color: #666;
+  color: var(--color-text-muted);
 }
 
 .header__profile-info {
@@ -120,18 +135,19 @@ const { logout, isPending: logoutPending } = useLogout()
 .header__profile-name {
   font-size: 16px;
   font-weight: 600;
+  color: var(--color-text-primary);
 }
 
 .header__profile-username {
   font-size: 12px;
-  color: #666;
+  color: var(--color-text-muted);
 }
 
 .header__button {
   padding: 10px 18px;
   min-width: 140px;
   background: transparent;
-  border: 1px solid black;
+  border: 1px solid var(--color-border);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -144,6 +160,28 @@ const { logout, isPending: logoutPending } = useLogout()
 .header__button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.header__theme {
+  padding: 8px 14px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.header__theme:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.header__theme:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme='dark'] .header__theme:focus {
+  box-shadow: 0 0 0 2px rgba(148, 163, 184, 0.3);
 }
 
 @media (max-width: 720px) {
@@ -164,9 +202,14 @@ const { logout, isPending: logoutPending } = useLogout()
   .header__auth {
     width: 100%;
     justify-content: space-between;
+    flex-wrap: wrap;
   }
 
   .header__button {
+    flex: 1;
+  }
+
+  .header__theme {
     flex: 1;
   }
 }
