@@ -1,25 +1,84 @@
 <template>
-  <div class="register-page">
-    <h1 class="title">Добро пожаловать!</h1>
-    <RegisterForm />
-  </div>
+  <section class="auth-page">
+    <div class="auth-card">
+      <div class="auth-card__heading">
+        <h1 class="auth-card__title">Создайте аккаунт</h1>
+      </div>
+
+      <RegisterForm />
+
+      <p class="auth-card__hint">
+        Уже зарегистрированы?
+        <RouterLink to="/login" class="auth-card__link">перейдите на страницу входа</RouterLink>
+      </p>
+    </div>
+  </section>
 </template>
 
 <script setup lang="ts">
-import RegisterForm from "@/components/RegisterForm.vue";
+import RegisterForm from '@/components/RegisterForm.vue'
 </script>
 
 <style scoped>
-.register-page {
+.auth-page {
+  width: 100%;
+  padding: 80px 20px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex: 1;
-  padding: 60px 20px;
+  color: var(--color-text-primary);
 }
 
-.title {
-  margin: 0 0 30px;
+.auth-card {
+  width: 100%;
+  max-width: 520px;
+  padding: 36px 40px;
+  border-radius: 16px;
+  color: var(--color-text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.auth-card__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-card__title {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.auth-card__hint {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.auth-card__link {
+  color: var(--color-link);
+  text-decoration: underline;
+}
+
+.auth-card__link:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 640px) {
+  .auth-page {
+    padding: 60px 16px;
+  }
+
+  .auth-card {
+    padding: 28px 24px;
+  }
+
+  .auth-card__title {
+    font-size: 26px;
+  }
 }
 </style>

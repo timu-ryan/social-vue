@@ -46,7 +46,7 @@ const createdAgo = computed(() => formatRelative(props.user.createdAt))
   display: flex;
   gap: 10px;
   padding: 12px 20px 12px 12px;
-  border: 1px solid black;
+  border: 1px solid var(--color-border);
   border-radius: 10px;
   transition: transform 0.1s ease-in-out;
 }
@@ -61,8 +61,8 @@ const createdAgo = computed(() => formatRelative(props.user.createdAt))
 }
 
 .card__avatar {
-  width: 140px;
-  height: 140px;
+  width: 200px;
+  height: 200px;
   border-radius: 6px;
 }
 

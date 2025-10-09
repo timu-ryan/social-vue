@@ -18,8 +18,22 @@ import {VueQueryDevtools} from "@tanstack/vue-query-devtools";
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-
   font-family: "Avenir", Helvetica, Arial, sans-serif;
+}
+
+body {
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+a {
+  color: var(--color-link);
+}
+
+button {
+  color: inherit;
 }
 
 #app {
