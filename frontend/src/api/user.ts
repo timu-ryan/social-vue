@@ -20,3 +20,10 @@ export async function fetchUsersPage(offset = 0, limit = 5): Promise<UsersRespon
 
   return res.data;
 }
+
+export async function fetchUser(username: string) {
+  const res = await api.get<{ user: AuthUser}>('/api/users/' + username)
+  const user = res.data.user
+
+  return user
+}

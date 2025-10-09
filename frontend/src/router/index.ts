@@ -27,6 +27,12 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: '/users/:username',
+    name: 'userProfile',
+    component: () => import("@/pages/UserProfile.vue"),
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/:pathMatch(.*)*',
     component: () => import("@/pages/NotFound.vue"),
   }

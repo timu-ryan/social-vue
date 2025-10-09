@@ -4,7 +4,7 @@
     <p>поиск...</p>
     <ListTypePicker v-model:listType="pickedListType" />
     <ul class="users" :class="{ users_detailed: pickedListType === 'detailed' }" >
-      <li v-for="(user, index) in users" :key="user.id">
+      <li v-for="(user, index) in users" :key="user.id" @click="() => router.push('/users/'+user.username)">
         <UserCard v-if="pickedListType === 'common'" :user="user" />
         <DetailedUserCard v-else :user="user" />
       </li>
@@ -22,6 +22,7 @@ import {ref, watchEffect} from "vue";
 import UserCard from "@/components/UserCard.vue";
 import ListTypePicker from "@/components/ListTypePicker.vue";
 import DetailedUserCard from "@/components/DetailedUserCard.vue";
+import router from "@/router";
 
 
 const {
