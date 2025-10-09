@@ -1,17 +1,20 @@
 <template>
-  <div>
-    Профиль пользователя:
-    <pre>{{user}}</pre>
-    загрузка: <pre>{{isLoading}}</pre>
-    ошибка: <pre>{{error}}</pre>
-  </div>
+  <section class="user-profile-page">
+    <UserProfileCard
+      :user="user"
+      :is-loading="isLoading"
+      :error="error"
+      :title="profileTitle"
+    />
+  </section>
 </template>
 
 <script setup lang="ts">
-import {computed, watchEffect} from 'vue'
+import { computed, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
-import router from "@/router";
-import {useUser} from "@/composables/useUser.ts";
+import router from '@/router'
+import { useUser } from '@/composables/useUser.ts'
+import UserProfileCard from '@/components/UserProfileCard.vue'
 
 const route = useRoute()
 
@@ -26,8 +29,18 @@ watchEffect(() => {
 
 const { user, isLoading, error } = useUser(username)
 
+const profileTitle = computed(() => {
+  if (username.value) return `Профиль @${username.value}`
+  return 'Профиль пользователя'
+})
 </script>
 
 <style scoped>
-
+.user-profile-page {
+  width: 100%;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
 </style>
