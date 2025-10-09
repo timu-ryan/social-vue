@@ -51,6 +51,16 @@
         </dl>
       </div>
 
+      <div v-else-if="isGuest" class="profile-card__state profile-card__state_guest">
+        <span>Здесь пока пусто.</span>
+        <p class="profile-card__hint">
+          <RouterLink to="/login" class="profile-card__link">Войдите</RouterLink>
+          или
+          <RouterLink to="/register" class="profile-card__link">создайте аккаунт</RouterLink>,
+          чтобы заполнить профиль.
+        </p>
+      </div>
+
       <p v-else class="profile-card__state">пользователь не найден</p>
     </article>
   </section>
@@ -59,11 +69,16 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useMe } from '@/composables/useMe.ts'
+import { useAuthStore } from '@/stores/auth'
 import { formatInMoscow, formatRelative } from '@/utils'
 
 const { user, error, isLoading } = useMe()
 
 const isEditPopupOpen = ref(false)
+
+const auth = useAuthStore()
+
+const isGuest = computed(() => !auth.isAuthed)
 
 const canEditProfile = computed(() => !!user.value)
 
@@ -161,6 +176,27 @@ const openEditPopup = () => {
   color: inherit;
   opacity: 0.8;
   overflow-wrap: anywhere;
+}
+
+.profile-card__state_guest {
+  color: #333;
+}
+
+.profile-card__hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  color: #555;
+}
+
+.profile-card__link {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.profile-card__link:hover {
+  opacity: 0.8;
 }
 
 .profile-card__body {
